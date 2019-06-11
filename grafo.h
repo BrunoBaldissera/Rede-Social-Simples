@@ -1,8 +1,9 @@
 #ifndef GRAFO_H
 #define GRAFO_H
 
-#define DEBUG 1
+#include <stdio.h>
 
+#define DEBUG 1
 #define EXPANSAO 200
 
 typedef struct Dados_{
@@ -32,5 +33,17 @@ typedef struct Grafo_{
 	int nVertices;
 	Vertice** vertices;
 }Grafo;
+
+Dados** recuperaDados(FILE* arquivo);
+
+Vertice* criaVertice(Dados* dados);
+
+Grafo* criaGrafo();
+
+void constroiGrafo(Grafo* g, Dados** dados, int* erro);
+
+void insereVertice(Grafo* g, Vertice* v, int* erro);
+
+void enviaPedido(Grafo* g, int idEnvia, int idRecebe);
 
 #endif

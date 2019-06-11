@@ -5,8 +5,18 @@
 
 #include "grafo.h"
 
-Dados* recuperaDados(FILE* arquivo){
-	Dados* d = (Dados*) malloc(sizeof(Dados));
+Dados** recuperaDados(FILE* arquivo){
+	int npessoas = 0;
+	
+	char buffer;
+	fseek(arquivo, 0, SEEK_SET);	
+	while(!feof(arquivo)){
+		fscanf(arquivo, "%c%*[^\n]\n", &buffer);
+		if (buffer == '\n') npessoas++;
+	}	
+
+	Dados** d = (Dados**) malloc(sizeof(Dados*) * npessoas * EXPANSAO);
+	
 	//le o txt e guarda os campos
 
 	return d;
@@ -39,6 +49,11 @@ Grafo* criaGrafo(){
 	return g;
 }
 
+void constroiGrafo(Grafo* g, Dados** dados, int* erro){
+	/*cria um vertice para cada posicao do vetor de dados,
+	incluindo no grafo g*/
+}
+
 void insereVertice(Grafo* g, Vertice* v, int* erro){
 	//tratamentos de erros, caso o grafo ou vertice nao exista marcamos existencia de erro e finalizamos a funcao	
 	if(g == NULL || v == NULL){
@@ -52,27 +67,13 @@ void insereVertice(Grafo* g, Vertice* v, int* erro){
 	*/
 	int nAumentos = (g->nVertices / EXPANSAO) + 1;
 	if(g->nVertices == (nAumentos * EXPANSAO) - 1){
-		g->nVertices = (Vertices**) realloc(g->nVertices, (nAumentos + 1) * EXPANSAO * sizeof(Vertice*) );
+		g->vertices = (Vertice**) realloc(g->vertices, (nAumentos + 1) * EXPANSAO * sizeof(Vertice*) );
 	}
 
-	//caso especial de primeira insercao no grafo
-	if (g->nVertices == 0){
-		//definimos o id do primeiro membro da rede		
-		v->id = 1;
-		
-		g->inicio = v;
-		g->ultimo = v;
-		g->ultimo->prox = NULL;
-		
-		g->nVertices++;
-		return;
-	}
 	//definimos o id do membro, baseado no ultimo membro da rede
-	v->id = g->ultimo->id + 1;		
-	
-	g->ultimo->prox = v;
-	g->ultimo = v;
-	g->ultimo->prox = NULL;
+	v->id = g->nVertices + 1;		
+
+	g->vertices[g->nVertices] = v;	
 
 	g->nVertices++;
 }
