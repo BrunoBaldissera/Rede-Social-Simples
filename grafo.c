@@ -5,23 +5,6 @@
 
 #include "grafo.h"
 
-Dados** recuperaDados(FILE* arquivo){
-	int npessoas = 0;
-	
-	char buffer;
-	fseek(arquivo, 0, SEEK_SET);	
-	while(!feof(arquivo)){
-		fscanf(arquivo, "%c%*[^\n]\n", &buffer);
-		if (buffer == '\n') npessoas++;
-	}	
-
-	Dados** d = (Dados**) malloc(sizeof(Dados*) * npessoas * EXPANSAO);
-	
-	//le o txt e guarda os campos
-
-	return d;
-}
-
 Vertice* criaVertice(Dados* dados){
 	Vertice* v = (Vertice*) malloc(sizeof(Vertice));
 	
@@ -40,6 +23,35 @@ Vertice* criaVertice(Dados* dados){
 	return v;
 }
 
+Vertice** recuperaDados(FILE* arquivo, int* nVertices){
+	int npessoas = 0;
+	
+	fseek(arquivo, 0, SEEK_SET);	
+	while(!feof(arquivo)){
+		fscanf(arquivo, "%*[^\n]\n");
+		npessoas++;
+	}	
+
+	*nVertices = npessoas;
+
+	Dados** d = (Dados**) malloc(sizeof(Dados*) * npessoas);
+
+	Vertice** vertices = (Vertice**) malloc(sizeof(Vertice*) * npessoas * EXPANSAO);
+	fseek(arquivo, 0, SEEK_SET);
+	
+	int i = 0;
+	//le o txt e guarda os campos
+	do{
+		fscanf(arquivo, "%[^,],%d,%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", d[i]->nome, &(d[i]->idade), d[i]->cidade, d[i]->filme, d[i]->time, 
+			d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
+
+			vertices[i] = criaVertice(d[i]);
+		i++;
+	}while(!feof(arquivo));
+
+	return vertices;
+}
+
 Grafo* criaGrafo(){
 	Grafo* g = (Grafo*) malloc(sizeof(Grafo));
 	
@@ -49,9 +61,12 @@ Grafo* criaGrafo(){
 	return g;
 }
 
-void constroiGrafo(Grafo* g, Dados** dados, int* erro){
-	/*cria um vertice para cada posicao do vetor de dados,
-	incluindo no grafo g*/
+Grafo* constroiGrafo(FILE* arquivo, int* erro){
+	Grafo* g = criaGrafo();
+
+	g->vertices = recuperaDados(arquivo, &(g->nVertices));
+
+	return g;
 }
 
 void insereVertice(Grafo* g, Vertice* v, int* erro){

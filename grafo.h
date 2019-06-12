@@ -34,13 +34,13 @@ typedef struct Grafo_{
 	Vertice** vertices;
 }Grafo;
 
-Dados** recuperaDados(FILE* arquivo);
+Vertice** recuperaDados(FILE* arquivo, int* nVertices);
 
 Vertice* criaVertice(Dados* dados);
 
 Grafo* criaGrafo();
 
-void constroiGrafo(Grafo* g, Dados** dados, int* erro);
+Grafo* constroiGrafo(FILE* arquivo, int* erro);
 
 void insereVertice(Grafo* g, Vertice* v, int* erro);
 

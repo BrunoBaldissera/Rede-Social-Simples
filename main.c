@@ -9,13 +9,9 @@ int main(int argc, char* argv[]){
 	char nomeArquivo[100];	
 	scanf("%s", nomeArquivo);	
 	FILE* arquivoTexto = fopen(nomeArquivo, "r+");	
-	
-	Dados** dados;
-	dados = recuperaDados(arquivoTexto);
 
 	int erro;
-	Grafo* grafo = criaGrafo();
-	constroiGrafo(grafo, dados, &erro);
+	Grafo* g = constroiGrafo(arquivoTexto, &erro);
 
 	//loop de execução do programa
 	int op;		
