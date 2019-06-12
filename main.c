@@ -14,11 +14,42 @@ int main(int argc, char* argv[]){
 	Grafo* g = constroiGrafo(arquivoTexto, &erro);
 
 	//loop de execução do programa
-	int op;		
-	do{
-		//login();
-		scanf("%d", &op);
-	}while(op != 0);
+	char login[200];
+	char op;		
+	while(1){
+		printf("Bem vindo ao Tinderbook\nPor favor insira seu nome de usuário abaixo!\nSe desejar sair, digite \"s\"\n");
+		scanf("%s", login);
+		if (strcmp(login, "s") == 0) return 0;
+		
+		printf("Olá %s!\n", login);
+			
+		do{	
+			printf("Se quiser ver seus amigos, digite \"v\"\nSe quiser ver recomendações de amigos digite \"r\"\nSe quiser enviar um pedido de amizade digite \"a\"\nPara ver sua lista de pedidos de amizade digite \"p\"\nPara sair, digite\"s\"\n");
+			scanf(" %c", &op);
+
+			switch (op){
+				case 'v':
+					
+					break;
+
+				case 'r':
+					
+					break;
+				case 'a':
+					
+					break;
+				case 'p':
+					
+					break;
+				case 's':					
+					break;
+				default:
+					printf("Opção inválida, tente novamente...");
+					break; 
+			}
+	
+		}while(op != 's');	
+	}
 
 	return 0;
 }
