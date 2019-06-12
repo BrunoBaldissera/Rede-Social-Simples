@@ -17,14 +17,14 @@ int main(int argc, char* argv[]){
 	char login[200];
 	char op;		
 	while(1){
-		printf("Bem vindo ao Tinderbook\nPor favor insira seu nome de usuário abaixo!\nSe desejar sair, digite \"s\"\n");
+		printf("\nBem vindo ao Tinderbook\nPor favor insira seu nome de usuário abaixo!\nSe desejar sair, digite \"s\"\n");
 		scanf("%s", login);
 		if (strcmp(login, "s") == 0) return 0;
 		
 		printf("Olá %s!\n", login);
 			
 		do{	
-			printf("Se quiser ver seus amigos, digite \"v\"\nSe quiser ver recomendações de amigos digite \"r\"\nSe quiser enviar um pedido de amizade digite \"a\"\nPara ver sua lista de pedidos de amizade digite \"p\"\nPara sair, digite\"s\"\n");
+			printf("\nSe quiser ver seus amigos, digite \"v\"\nSe quiser ver recomendações de amigos digite \"r\"\nSe quiser enviar um pedido de amizade digite \"a\"\nPara ver sua lista de pedidos de amizade digite \"p\"\nPara sair, digite\"s\"\n");
 			scanf(" %c", &op);
 
 			switch (op){

@@ -6,21 +6,31 @@
 
 #include "grafo.h"
 
+char* strlower(char* s){
+	for(int i = 0; s[i]; i++){
+		s[i] = tolower(s[i]);
+	}
+	return s;
+}
+
 Vertice* criaVertice(Dados* dados){
 	Vertice* v = (Vertice*) malloc(sizeof(Vertice));
 	v->dados = (Dados*) malloc(sizeof(Dados));
-		
+	
 	//neste bloco de codigo atribuimos ao campo de dados do vertice os dados passados como parametro lidos no arquivo de texto 
 	strcpy(v->dados->nome, dados->nome);
 	v->dados->idade = dados->idade;
-	strcpy(v->dados->cidade, dados->cidade);
-	strcpy(v->dados->filme, dados->filme);
-	strcpy(v->dados->time, dados->time);
-	strcpy(v->dados->livro, dados->livro);
-	strcpy(v->dados->comida, dados->comida);
-	strcpy(v->dados->hobbie, dados->hobbie);
-	strcpy(v->dados->musica, dados->musica);
-	strcpy(v->dados->atividade, dados->atividade);
+	strcpy(v->dados->cidade, strlower(dados->cidade));
+	strcpy(v->dados->filme, strlower(dados->filme));
+	strcpy(v->dados->time, strlower(dados->time));
+	strcpy(v->dados->livro, strlower(dados->livro));
+	strcpy(v->dados->comida, strlower(dados->comida));
+	strcpy(v->dados->hobbie, strlower(dados->hobbie));
+	strcpy(v->dados->musica, strlower(dados->musica));
+	strcpy(v->dados->atividade, strlower(dados->atividade));
+
+	if (DEBUG) printf("nova pessoa:\nnome: %s\nidade: %d\ncidade: %s\nfilme: %s\ntime: %s\nlivro: %s\ncomida: %s\nhobbie: %s\nmusica: %s\natividades: %s\n\n",
+			v->dados->nome, v->dados->idade, v->dados->cidade, v->dados->filme, v->dados->time, v->dados->livro, v->dados->comida, v->dados->hobbie, v->dados->musica, v->dados->atividade);
 
 	return v;
 }
@@ -56,8 +66,8 @@ Vertice** recuperaDados(FILE* arquivo, int* nVertices){
 		fscanf(arquivo, "%[^,],%d,%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", d[i]->nome, &(d[i]->idade), d[i]->cidade, d[i]->filme, d[i]->time, 
 			d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
 
-		if (DEBUG) printf("nova pessoa:\nnome: %s\nidade: %d\ncidade: %s\nfilme: %s\ntime: %s\nlivro: %s\ncomida: %s\nhobbie: %s\nmusica: %s\natividades: %s\n\n",
-			d[i]->nome, d[i]->idade, d[i]->cidade, d[i]->filme, d[i]->time, d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
+		//if (DEBUG) printf("nova pessoa:\nnome: %s\nidade: %d\ncidade: %s\nfilme: %s\ntime: %s\nlivro: %s\ncomida: %s\nhobbie: %s\nmusica: %s\natividades: %s\n\n",
+		//	d[i]->nome, d[i]->idade, d[i]->cidade, d[i]->filme, d[i]->time, d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
 
 		vertices[i] = criaVertice(d[i]);
 		i++;
