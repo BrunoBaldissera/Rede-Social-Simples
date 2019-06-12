@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <ctype.h>
 
 #include "grafo.h"
 
 Vertice* criaVertice(Dados* dados){
 	Vertice* v = (Vertice*) malloc(sizeof(Vertice));
-	
+	v->dados = (Dados*) malloc(sizeof(Dados));
+		
 	//neste bloco de codigo atribuimos ao campo de dados do vertice os dados passados como parametro lidos no arquivo de texto 
 	strcpy(v->dados->nome, dados->nome);
 	v->dados->idade = dados->idade;
@@ -24,19 +26,28 @@ Vertice* criaVertice(Dados* dados){
 }
 
 Vertice** recuperaDados(FILE* arquivo, int* nVertices){
+	if (DEBUG) printf("Recuperando dados\n");
 	int npessoas = 0;
 	
 	fseek(arquivo, 0, SEEK_SET);	
 	while(!feof(arquivo)){
 		fscanf(arquivo, "%*[^\n]\n");
 		npessoas++;
-	}	
+	}
+	if (DEBUG) printf("Numero de pessoas calculado: %d\n", npessoas);
 
 	*nVertices = npessoas;
 
 	Dados** d = (Dados**) malloc(sizeof(Dados*) * npessoas);
+	for(int i = 0; i < npessoas; i++){
+		d[i] = (Dados*) malloc(sizeof(Dados));
+	}
 
 	Vertice** vertices = (Vertice**) malloc(sizeof(Vertice*) * npessoas * EXPANSAO);
+	for(int i = 0; i < npessoas; i++){
+		vertices[i] = (Vertice*) malloc(sizeof(Vertice));
+	}
+
 	fseek(arquivo, 0, SEEK_SET);
 	
 	int i = 0;
@@ -45,7 +56,10 @@ Vertice** recuperaDados(FILE* arquivo, int* nVertices){
 		fscanf(arquivo, "%[^,],%d,%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", d[i]->nome, &(d[i]->idade), d[i]->cidade, d[i]->filme, d[i]->time, 
 			d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
 
-			vertices[i] = criaVertice(d[i]);
+		if (DEBUG) printf("nova pessoa:\nnome: %s\nidade: %d\ncidade: %s\nfilme: %s\ntime: %s\nlivro: %s\ncomida: %s\nhobbie: %s\nmusica: %s\natividades: %s\n\n",
+			d[i]->nome, d[i]->idade, d[i]->cidade, d[i]->filme, d[i]->time, d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
+
+		vertices[i] = criaVertice(d[i]);
 		i++;
 	}while(!feof(arquivo));
 
@@ -63,7 +77,8 @@ Grafo* criaGrafo(){
 
 Grafo* constroiGrafo(FILE* arquivo, int* erro){
 	Grafo* g = criaGrafo();
-
+	if (DEBUG) printf("Grafo criado!\n");	
+	
 	g->vertices = recuperaDados(arquivo, &(g->nVertices));
 
 	return g;

@@ -18,7 +18,7 @@ int main(int argc, char* argv[]){
 	do{
 		//login();
 		scanf("%d", &op);
-	}while(op != '0');
+	}while(op != 0);
 
 	return 0;
 }
