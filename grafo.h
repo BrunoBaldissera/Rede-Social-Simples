@@ -5,6 +5,7 @@
 
 #define DEBUG 1
 #define EXPANSAO 200
+#define MAX_PEDIDOS 50
 
 typedef struct Dados_{
 	char nome[200];
@@ -26,7 +27,8 @@ typedef struct Vertice_{
 	
 	Dados* dados;
 	
-	struct Vertice_** pedidos;
+	Dados* pedidos[MAX_PEDIDOS];
+	int tamPedidos;
 }Vertice;
 
 typedef struct Grafo_{
@@ -34,9 +36,11 @@ typedef struct Grafo_{
 	Vertice** vertices;
 }Grafo;
 
-Vertice** recuperaDados(FILE* arquivo, int* nVertices);
+char* strlower(char* s);
 
 Vertice* criaVertice(Dados* dados);
+
+Vertice** recuperaDados(FILE* arquivo, int* nVertices);
 
 Grafo* criaGrafo();
 
@@ -44,6 +48,12 @@ Grafo* constroiGrafo(FILE* arquivo, int* erro);
 
 void insereVertice(Grafo* g, Vertice* v, int* erro);
 
-void enviaPedido(Grafo* g, int idEnvia, int idRecebe);
+int enviaPedido(Grafo* g, int idEnvia, int idRecebe);
+
+void criaCadastro(Grafo* g, int* erro);
+
+void imprimeAmigos(Grafo* g, int id);
+
+int confereId(Grafo* g, char login[], int id);
 
 #endif

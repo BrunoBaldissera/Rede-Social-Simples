@@ -16,7 +16,12 @@ char* strlower(char* s){
 Vertice* criaVertice(Dados* dados){
 	Vertice* v = (Vertice*) malloc(sizeof(Vertice));
 	v->dados = (Dados*) malloc(sizeof(Dados));
-	
+
+	v->tamPedidos = 0;	
+
+	v->prox = NULL;	//definimos a lista de amigos como nula		
+	v->afinidade = -1; //definimos a afinidade como invalida, por enquanto
+
 	//neste bloco de codigo atribuimos ao campo de dados do vertice os dados passados como parametro lidos no arquivo de texto 
 	strcpy(v->dados->nome, dados->nome);
 	v->dados->idade = dados->idade;
@@ -31,7 +36,6 @@ Vertice* criaVertice(Dados* dados){
 
 	if (DEBUG) printf("nova pessoa:\nnome: %s\nidade: %d\ncidade: %s\nfilme: %s\ntime: %s\nlivro: %s\ncomida: %s\nhobbie: %s\nmusica: %s\natividades: %s\n\n",
 			v->dados->nome, v->dados->idade, v->dados->cidade, v->dados->filme, v->dados->time, v->dados->livro, v->dados->comida, v->dados->hobbie, v->dados->musica, v->dados->atividade);
-
 	return v;
 }
 
@@ -54,9 +58,6 @@ Vertice** recuperaDados(FILE* arquivo, int* nVertices){
 	}
 
 	Vertice** vertices = (Vertice**) malloc(sizeof(Vertice*) * npessoas * EXPANSAO);
-	for(int i = 0; i < npessoas; i++){
-		vertices[i] = (Vertice*) malloc(sizeof(Vertice));
-	}
 
 	fseek(arquivo, 0, SEEK_SET);
 	
@@ -66,8 +67,8 @@ Vertice** recuperaDados(FILE* arquivo, int* nVertices){
 		fscanf(arquivo, "%[^,],%d,%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", d[i]->nome, &(d[i]->idade), d[i]->cidade, d[i]->filme, d[i]->time, 
 			d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
 
-		//if (DEBUG) printf("nova pessoa:\nnome: %s\nidade: %d\ncidade: %s\nfilme: %s\ntime: %s\nlivro: %s\ncomida: %s\nhobbie: %s\nmusica: %s\natividades: %s\n\n",
-		//	d[i]->nome, d[i]->idade, d[i]->cidade, d[i]->filme, d[i]->time, d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
+		if (DEBUG) printf("nova pessoa:\nnome: %s\nidade: %d\ncidade: %s\nfilme: %s\ntime: %s\nlivro: %s\ncomida: %s\nhobbie: %s\nmusica: %s\natividades: %s\n\n",
+			d[i]->nome, d[i]->idade, d[i]->cidade, d[i]->filme, d[i]->time, d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
 
 		vertices[i] = criaVertice(d[i]);
 		i++;
@@ -111,14 +112,92 @@ void insereVertice(Grafo* g, Vertice* v, int* erro){
 	}
 
 	//definimos o id do membro, baseado no ultimo membro da rede
-	v->id = g->nVertices + 1;		
+	v->id = g->nVertices + 1;
 
 	g->vertices[g->nVertices] = v;	
 
 	g->nVertices++;
 }
 
-void enviaPedido(Grafo* g, int idEnvia, int idRecebe){	
+int enviaPedido(Grafo* g, int idEnvia, int idRecebe){	
+	//aqui verificamos se o id pedido não é inválido, ou seja, não existe na rede	
+	if(idRecebe > g->nVertices) return 0;
+	if(g->vertices[idRecebe - 1]->tamPedidos == MAX_PEDIDOS){
+		printf("Infelizmente a lista de pedidos de amizade desta pessoa está cheia, tente novamente mais tarde...\n");
+		return 0;
+	}
+	if(idEnvia == idRecebe){
+		printf("Você não pode se adicionar na rede, tenho certeza que mais alguém te quer como amigo, não desista!\n");
+		return 0;
+	}
 
+	g->vertices[idRecebe - 1]->pedidos[g->vertices[idRecebe - 1]->tamPedidos] = g->vertices[idEnvia - 1]->dados;
+	g->vertices[idRecebe - 1]->tamPedidos++;	
+
+	return 1;
 }
 
+/*int aceitaPedido(	){
+
+
+
+}*/
+
+void criaCadastro(Grafo* g, int* erro){
+	Dados* d = (Dados*) malloc(sizeof(Dados));
+	printf("Para criar sua conta precisaremos de alguns dados.\nInsira aqui seu nome\n");
+	scanf("%s", d->nome);
+
+	printf("Agora insira a sua idade\n");
+	scanf("%d", &(d->idade));
+	
+	printf("Agora insira a cidade onde você mora\n");
+	scanf(" %s", d->cidade);
+
+	printf("Para qual time você torce\n");
+	scanf("%s", d->time);
+
+	printf("Seu filme favorito\n");
+	scanf("%s", d->filme);
+
+	printf("Seu livro favorito\n");
+	scanf("%s", d->livro);
+	
+	printf("Qual seu prato preferido?\n");
+	scanf("%s", d->comida);
+
+	printf("Seu hobbie, ou o que você faz nas horas vagas, em poucas palavras\n");
+	scanf("%s", d->hobbie);
+
+	printf("Sua música\n");
+	scanf("%s", d->musica);
+
+	printf("Agora o que você faz, profissão ou estudos\n");
+	scanf("%s", d->atividade);
+
+	Vertice* v = criaVertice(d);
+	insereVertice(g, v, erro);
+}
+
+void imprimeAmigos(Grafo* g, int id){
+	if(g->vertices[id]->prox == NULL){
+		printf("Parece que você ainda não possui amigos... Quando voltar ao menu olhe as suas recomendações de amigos baseada em pessoas compatíveis a você e envie um pedido de amizade a elas!\n");
+		return;
+	}
+
+	Vertice* percorre = g->vertices[id]->prox;
+	int namigos = 0;	
+	while(percorre != NULL){
+		printf("%d:\t%s\n", namigos, g->vertices[id]->dados->nome);
+		percorre = percorre->prox;
+	}
+}
+
+int confereId(Grafo* g, char login[], int id){
+	if(g == NULL || login == NULL){
+		return 0;
+	}
+	if (g->vertices[id] == NULL) return 0;
+	if (strcmp(g->vertices[id]->dados->nome, login) == 0) return 1;
+	return 0;   
+}
