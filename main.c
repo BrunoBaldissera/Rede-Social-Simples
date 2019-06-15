@@ -73,7 +73,7 @@ int main(int argc, char* argv[]){
 
 					break;
 				case 'p':
-					
+					mostraPedidos(g, id);
 					break;
 				case 's':					
 					break;
