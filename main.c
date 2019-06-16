@@ -7,7 +7,8 @@
 
 int main(int argc, char* argv[]){
 	char nomeArquivo[100];	
-	scanf("%s", nomeArquivo);	
+	scanf("%s", nomeArquivo);
+	fflush(stdin);	
 	FILE* arquivoTexto = fopen(nomeArquivo, "r+");
 	if (arquivoTexto == NULL){
 		printf("O arquivo não existe.\n");
@@ -18,13 +19,19 @@ int main(int argc, char* argv[]){
 	Grafo* g = constroiGrafo(arquivoTexto, &erro);
 	if (DEBUG) printf("o tamanho do grafo criado é %d\n", g->nVertices);
 
+	printf("Imprimindo membros da rede!\n");
+	for(int i = 0; i < g->nVertices; i++){
+		printf("id: %d, nome: %s\n", g->vertices[i]->id, g->vertices[i]->dados->nome);
+	}
+
 	//loop de execução do programa
 	char login[200];
 	int id;
 	char op;		
 	while(1){
 		printf("\nBem vindo ao Tinderbook\nPor favor insira seu nome de usuário abaixo!\nSe desejar sair, digite \"s\"\n");
-		scanf("%s", login);
+		
+		scanf(" %[^\n]%*c", login);
 		
 		if (strcmp(login, "s") == 0) return 0;
 		
@@ -47,7 +54,7 @@ int main(int argc, char* argv[]){
 			printf("Ocorreu algum erro, reinsira seus dados de cadastro\n");
 			continue;
 		}
-				
+		system("clear");	
 		printf("Olá %s!\n", login);
 			
 		do{	
@@ -82,7 +89,8 @@ int main(int argc, char* argv[]){
 					break; 
 			}
 	
-		}while(op != 's');	
+		}while(op != 's');
+		system("clear");	
 	}
 
 	return 0;
