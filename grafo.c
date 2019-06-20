@@ -166,11 +166,13 @@ void aceitaPedido(Grafo* g, int idRecebe, int idEnvia, int posVet){
 		novoAmg->id = idEnvia;
 		novoAmg->proxAmigo = NULL;
 	} else {
+		Amigo* novoAmg = (Amigo*) malloc(sizeof(Amigo));
 		while(amg->proxAmigo != NULL){
 			amg = amg->proxAmigo;
 		}
-		amg->proxAmigo->id =idEnvia;
-		amg->proxAmigo->proxAmigo = NULL;
+		novoAmg->id = idEnvia;
+		novoAmg->proxAmigo = NULL;
+		amg->proxAmigo = novoAmg;
 	}
 
 	//este bloco de codigo adiciona na lista de adjacências do vertice que envia o vertice que recebe, criando uma aresta entre os dois
@@ -182,16 +184,18 @@ void aceitaPedido(Grafo* g, int idRecebe, int idEnvia, int posVet){
 		novoAmg->id = idRecebe;
 		novoAmg->proxAmigo = NULL;
 	} else {
+		Amigo* novoAmg = (Amigo*) malloc(sizeof(Amigo));
 		while(amg->proxAmigo != NULL){
 			amg = amg->proxAmigo;
 		}
-		amg->proxAmigo->id =idRecebe;
-		amg->proxAmigo->proxAmigo = NULL;
+		novoAmg->id = idRecebe;
+		novoAmg->proxAmigo = NULL;
+		amg->proxAmigo = novoAmg;
 	}
 }
 
 void mostraPedidos(Grafo* g, int id){
-	if (id <= 0 || id > g->nVertices){
+	if (id < 0 || id > g->nVertices){
 		printf("id inválido, tente novamente\n");
 		return;
 	}
