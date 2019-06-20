@@ -17,7 +17,7 @@ typedef struct Dados_{
 	char comida[200];
 	char hobbie[200];
 	char musica[200];
-	char atividade[200];
+	char atividade[200];	
 }Dados;
 
 typedef struct Vertice_{
@@ -27,7 +27,7 @@ typedef struct Vertice_{
 	
 	Dados* dados;
 	
-	Dados* pedidos[MAX_PEDIDOS];
+	struct Vertice_* pedidos[MAX_PEDIDOS];
 	int tamPedidos;
 }Vertice;
 
@@ -50,6 +50,10 @@ void insereVertice(Grafo* g, Vertice* v, int* erro);
 
 int enviaPedido(Grafo* g, int idEnvia, int idRecebe);
 
+void aceitaPedido(Grafo* g, int idRecebe, int idEnvia, int posVet);
+
+void mostraPedidos(Grafo* g, int id);
+
 void criaCadastro(Grafo* g, int* erro);
 
 void imprimeAmigos(Grafo* g, int id);
@@ -58,4 +62,5 @@ int confereId(Grafo* g, char login[], int id);
 
 Vertice** similaridade(Grafo* g, int idUsuario);
 
+void genteErrada(Grafo* g, int idUsuario);
 #endif

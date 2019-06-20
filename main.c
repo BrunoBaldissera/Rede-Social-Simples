@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -68,7 +69,7 @@ int main(int argc, char* argv[]){
 					break;
 
 				case 'r':
-					
+					similaridade(g, id);
 					break;
 				case 'a':
 					printf("Insira aqui o id da pessoa que você quer adicionar!\n");

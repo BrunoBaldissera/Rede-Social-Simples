@@ -1,4 +1,4 @@
-Gustavo de Oliveira,19,são carlos,vingadores,são paulo,1984,macarrão,culinária,animal,estudante
+Gustavo,19,são carlos,vingadores,são paulo,1984,macarrão,culinária,animal,estudante
 Lucas Tuga,19,são carlos,matrix,são paulo,a revolução dos bichos,hamburguer,música,black,estudante
 Bruno Baldissera,19,são carlos,blade runner,são paulo,a revolução dos bichos,hamburguer,música,black,estudante
 Anielle Tuga,22,são paulo,matrix,palmeiras,cidade de vidro,hamburguer,fotografia,to all of you,desempregada
