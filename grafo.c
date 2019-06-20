@@ -52,12 +52,12 @@ Vertice** recuperaDados(FILE* arquivo, int* nVertices){
 
 	*nVertices = npessoas;
 
-	Vertice** vertices = (Vertice**) malloc(sizeof(Vertice*) * npessoas * EXPANSAO);
-
 	Dados** d = (Dados**) malloc(sizeof(Dados*) * npessoas);
 	for(int i = 0; i < npessoas; i++){
 		d[i] = (Dados*) malloc(sizeof(Dados));
 	}
+
+	Vertice** vertices = (Vertice**) malloc(sizeof(Vertice*) * npessoas * EXPANSAO);
 
 	fseek(arquivo, 0, SEEK_SET);
 	
@@ -71,7 +71,6 @@ Vertice** recuperaDados(FILE* arquivo, int* nVertices){
 			d[i]->nome, d[i]->idade, d[i]->cidade, d[i]->filme, d[i]->time, d[i]->livro, d[i]->comida, d[i]->hobbie, d[i]->musica, d[i]->atividade);
 
 		vertices[i] = criaVertice(d[i]);
-		vertices[i]->id = i;
 		i++;
 	}while(!feof(arquivo));
 
@@ -123,102 +122,26 @@ void insereVertice(Grafo* g, Vertice* v, int* erro){
 int enviaPedido(Grafo* g, int idEnvia, int idRecebe){	
 	//aqui verificamos se o id pedido não é inválido, ou seja, não existe na rede	
 	if(idRecebe > g->nVertices) return 0;
-	//aqui verificamos se a lista de pedidos de quem recebe está cheia
-	if(g->vertices[idRecebe]->tamPedidos == MAX_PEDIDOS){
+	if(g->vertices[idRecebe - 1]->tamPedidos == MAX_PEDIDOS){
 		printf("Infelizmente a lista de pedidos de amizade desta pessoa está cheia, tente novamente mais tarde...\n");
 		return 0;
 	}
-	//aqui verificamos se quem envia o pedido é o mesmo de quem recebe
 	if(idEnvia == idRecebe){
 		printf("Você não pode se adicionar na rede, tenho certeza que mais alguém te quer como amigo, não desista!\n");
 		return 0;
 	}
 
-	for(int i = 0; i < g->vertices[idRecebe]->tamPedidos; i++){
-		if (g->vertices[idRecebe]->pedidos[i] == NULL){
-			g->vertices[idRecebe]->pedidos[i] = g->vertices[idEnvia];
-			g->vertices[idRecebe]->tamPedidos++;
-			return 1;
-		}
-	}
-
-	if(DEBUG) printf("id de quem envia: %d, nome: %s\n", g->vertices[idEnvia]->id, g->vertices[idEnvia]->dados->nome);
-	
-	//se chegou aqui é por que a lista nao tem "buracos", entao devemos inserir no final do vetor
-	g->vertices[idRecebe]->pedidos[g->vertices[idRecebe]->tamPedidos] = g->vertices[idEnvia];
-	g->vertices[idRecebe]->tamPedidos++;	
-
-	if(DEBUG) printf("id de quem envia na lista de pedidos: %d, nome: %s\n", g->vertices[idRecebe]->pedidos[(g->vertices[idRecebe]->tamPedidos) - 1]->id, g->vertices[idRecebe]->pedidos[(g->vertices[idRecebe]->tamPedidos) - 1]->dados->nome);
+	g->vertices[idRecebe - 1]->pedidos[g->vertices[idRecebe - 1]->tamPedidos] = g->vertices[idEnvia - 1]->dados;
+	g->vertices[idRecebe - 1]->tamPedidos++;	
 
 	return 1;
 }
 
-void aceitaPedido(Grafo* g, int idRecebe, int idEnvia, int posVet){
-	g->vertices[idRecebe]->pedidos[posVet] = NULL;
-	g->vertices[idRecebe]->tamPedidos--;
+/*int aceitaPedido(	){
 
-	//este bloco de codigo adiciona na lista de adjacências do vertice que recebe o vertice que envia, criando uma aresta entre os dois
-	Vertice* aux = g->vertices[idRecebe];
-	while(aux->prox != NULL){
-		aux = aux->prox;
-	}		
-	aux->prox = g->vertices[idEnvia];
-	aux->prox->prox = NULL;
-	
-	//este bloco de codigo adiciona na lista de adjacências do vertice que envia o vertice que recebe, criando uma aresta entre os dois
-	Vertice* aux2 = g->vertices[idEnvia];
-	while(aux2->prox != NULL){
-		aux2 = aux2->prox;
-	}		
-	aux2->prox = g->vertices[idRecebe];
-	aux2->prox->prox = NULL;
-}
 
-void mostraPedidos(Grafo* g, int id){
-	if (id <= 0 || id > g->nVertices){
-		printf("id inválido, tente novamente\n");
-		return;
-	}
-	if(g->vertices[id]->tamPedidos == 0){
-		printf("Sua lista de pedidos de amizade está vazia!\n");
-		return;
-	}	
-	for(int i = 0; i < g->vertices[id]->tamPedidos; i++){
-		if(g->vertices[id]->pedidos[i] != NULL){
-			printf("id: %d, nome: %s\n", g->vertices[id]->pedidos[i]->id, g->vertices[id]->pedidos[i]->dados->nome);
-		}
-	}
 
-	char escolha;
-	int add;
-	int posVet;
-	short int existe = 0;
-	
-	printf("Você deseja aceitar algum pedido?\nSe sim, digite \"s\", se não, \"n\"\n");
-	scanf(" %c", &escolha);
-	if(escolha == 'n') return;
-
-	do{	
-		printf("\nOk! Agora digite o id da pessoa que deseja adicionar.\n"); 
-		scanf(" %d", &add);
-		if (add <= 0 || add > g->nVertices){
-			printf("Ocorreu algum erro, tente novamente\n");
-			return;
-		}
-		for(int i = 0; i < g->vertices[id]->tamPedidos; i++){
-			if (add == g->vertices[id]->pedidos[i]->id) {
-				existe = 1;
-				posVet = i;
-				break;
-			}
-		}
-		if (existe) aceitaPedido(g, id, add, posVet);
-		else printf("o id inserido não lhe enviou solicitação de amizade...\n");
-		
-		printf("Deseja aceitar outro pedido?\nSe sim, digite \"s\", se não, \"n\"\n");
-		scanf(" %c", &escolha);
-	}while(escolha != 'n');
-}
+}*/
 
 void criaCadastro(Grafo* g, int* erro){
 	Dados* d = (Dados*) malloc(sizeof(Dados));
@@ -263,11 +186,10 @@ void imprimeAmigos(Grafo* g, int id){
 	}
 
 	Vertice* percorre = g->vertices[id]->prox;
-	int namigos = 1;	
+	int namigos = 0;	
 	while(percorre != NULL){
 		printf("%d:\t%s\n", namigos, g->vertices[id]->dados->nome);
 		percorre = percorre->prox;
-		namigos++;
 	}
 }
 
