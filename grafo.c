@@ -159,19 +159,35 @@ void aceitaPedido(Grafo* g, int idRecebe, int idEnvia, int posVet){
 
 	//este bloco de codigo adiciona na lista de adjacências do vertice que recebe o vertice que envia, criando uma aresta entre os dois
 	Vertice* aux = g->vertices[idRecebe];
-	while(aux->prox != NULL){
-		aux = aux->prox;
-	}		
-	aux->prox = g->vertices[idEnvia];
-	aux->prox->prox = NULL;
-	
+	Amigo* amg = aux->prox;
+	if(amg == NULL){
+		Amigo* novoAmg = (Amigo*) malloc(sizeof(Amigo));
+		aux->prox = novoAmg;
+		novoAmg->id = idEnvia;
+		novoAmg->proxAmigo = NULL;
+	} else {
+		while(amg->proxAmigo != NULL){
+			amg = amg->proxAmigo;
+		}
+		amg->proxAmigo->id =idEnvia;
+		amg->proxAmigo->proxAmigo = NULL;
+	}
+
 	//este bloco de codigo adiciona na lista de adjacências do vertice que envia o vertice que recebe, criando uma aresta entre os dois
-	Vertice* aux2 = g->vertices[idEnvia];
-	while(aux2->prox != NULL){
-		aux2 = aux2->prox;
-	}		
-	aux2->prox = g->vertices[idRecebe];
-	aux2->prox->prox = NULL;
+	aux = g->vertices[idEnvia];
+	amg = aux->prox;
+	if(amg == NULL){
+		Amigo* novoAmg = (Amigo*) malloc(sizeof(Amigo));
+		aux->prox = novoAmg;
+		novoAmg->id = idRecebe;
+		novoAmg->proxAmigo = NULL;
+	} else {
+		while(amg->proxAmigo != NULL){
+			amg = amg->proxAmigo;
+		}
+		amg->proxAmigo->id =idRecebe;
+		amg->proxAmigo->proxAmigo = NULL;
+	}
 }
 
 void mostraPedidos(Grafo* g, int id){
@@ -262,12 +278,12 @@ void imprimeAmigos(Grafo* g, int id){
 		return;
 	}
 
-	Vertice* percorre = g->vertices[id]->prox;
-	int namigos = 1;	
-	while(percorre != NULL){
-		printf("%d:\t%s\n", namigos, g->vertices[id]->dados->nome);
-		percorre = percorre->prox;
-		namigos++;
+	Amigo* amg = g->vertices[id]->prox;
+	int nAmigos = 1;
+	while(amg != NULL){
+		printf("%d:\t%s\n", nAmigos, g->vertices[amg->id]->dados->nome);
+		amg = amg->proxAmigo;
+		nAmigos++;
 	}
 }
 
@@ -345,11 +361,11 @@ Vertice** similaridade(Grafo* g, int idUsuario){
 
 //A função vai ser executada sempre que o usuário logar no sistema e verificar quais amigos ele não deveria ter
 void genteErrada(Grafo* g, int idUsuario){
-	if(g->vertices[idUsuario]->prox != NULL){
-		Vertice* percorre = g->vertices[idUsuario]->prox;
-		while(percorre != NULL){
-			if(percorre->afinidade < 0.65) printf("Baixa afinidade: %d - %s - %lf\n",percorre->id, percorre->dados->nome, percorre->afinidade);
-			percorre = percorre->prox;
+	Amigo* amigo = g->vertices[idUsuario]->prox;
+	if (amigo != NULL){
+		while(amigo != NULL){
+		if(g->vertices[amigo->id]->afinidade < 0.65) printf("O/A %s possui baixa afinidade com o seu perfil\n", g->vertices[amigo->id]->dados->nome);
+		amigo = amigo->proxAmigo;
 		}
 	}
 }

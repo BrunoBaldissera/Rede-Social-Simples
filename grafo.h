@@ -20,8 +20,13 @@ typedef struct Dados_{
 	char atividade[200];	
 }Dados;
 
+typedef struct Amigo_{
+	int id;
+	struct Amigo_* proxAmigo;
+}Amigo;
+
 typedef struct Vertice_{
-	struct Vertice_* prox;
+	Amigo* prox;
 	double afinidade;
 	int id;	
 	

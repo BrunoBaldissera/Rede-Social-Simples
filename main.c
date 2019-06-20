@@ -57,6 +57,7 @@ int main(int argc, char* argv[]){
 		}
 		system("clear");	
 		printf("Olá %s!\n", login);
+		genteErrada(g, id);
 			
 		do{	
 			printf("\nSe quiser ver seus amigos, digite \"v\"\nSe quiser ver recomendações de amigos digite \"r\"\nSe quiser enviar um pedido de amizade digite \"a\"\nPara ver sua lista de pedidos de amizade digite \"p\"\nPara sair, digite \"s\"\n");
