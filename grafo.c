@@ -279,3 +279,69 @@ int confereId(Grafo* g, char login[], int id){
 	if (strcmp(g->vertices[id]->dados->nome, login) == 0) return 1;
 	return 0;   
 }
+
+//Função que segue o vetor de vértices até encontrar o nome(para id basta *g->vertices[id]*)
+Vertice* buscaPessoa(Grafo* g, char* nome){
+	for (int i = 0; i < g->nVertices; ++i){
+		if(!strcmp(g->vertices[i]->dados->nome, nome)) return g->vertices[i];
+	}
+	printf("Esse usuário não consta no nosso banco, tente novamente...\n");
+	return NULL;
+}
+
+double calculaSimilaridade(Vertice* v1, Vertice* v2){
+	double similaridade = 0;
+
+	if(v1->dados->idade <= v2->dados->idade+3 && v1->dados->idade >= v2->dados->idade-3) similaridade += 10;
+	if(v2->dados->idade <= v1->dados->idade+3 && v2->dados->idade >= v1->dados->idade-3) similaridade += 10;
+
+	if(!strcmp(v1->dados->cidade, v2->dados->cidade)) similaridade += 10;
+	
+	if(!strcmp(v1->dados->filme, v2->dados->filme)) similaridade += 10;
+	
+	if(!strcmp(v1->dados->time, v2->dados->time)) similaridade += 10;
+	
+	if(!strcmp(v1->dados->livro, v2->dados->livro)) similaridade += 10;
+	
+	if(!strcmp(v1->dados->comida, v2->dados->comida)) similaridade += 10;
+	
+	if(!strcmp(v1->dados->hobbie, v2->dados->hobbie)) similaridade += 15;
+	
+	if(!strcmp(v1->dados->musica, v2->dados->musica)) similaridade += 10;
+	
+	if(!strcmp(v1->dados->atividade, v2->dados->atividade)) similaridade += 15;
+
+	return similaridade/100;
+}
+
+//A função vai percorrer o grafo e analisar os outros usuários para ver qual o nível de similaridade entre eles
+Vertice** similaridade(Grafo* g, int idUsuario){
+	double simi;
+	int nRecomendacao = -1;
+	Vertice *usuario = (Vertice*) malloc(sizeof(Vertice));
+	usuario = g->vertices[idUsuario];
+	Vertice *amigo = (Vertice*) malloc(sizeof(Vertice));
+	
+	Vertice** listaRecomendacao = (Vertice**) malloc(sizeof(Vertice*) * g->nVertices);
+
+	for (int i = 0; i < g->nVertices; ++i){
+		if (i != idUsuario){
+			amigo = g->vertices[i];
+			simi = calculaSimilaridade(usuario, amigo);
+			if (simi > 0.65){
+				nRecomendacao++;
+				listaRecomendacao[nRecomendacao] = (Vertice*) malloc(sizeof(Vertice));
+				amigo->afinidade = simi;
+				listaRecomendacao[nRecomendacao] = amigo;
+				if(amigo->afinidade < 0.8) printf("%d - %s - %lf\n",amigo->id, amigo->dados->nome, amigo->afinidade);
+				else if(amigo->afinidade >= 0.8) printf("Você e %d - %s - %lf parecem combinar\n",amigo->id, amigo->dados->nome, amigo->afinidade);
+			}
+		}
+	}
+
+	if(nRecomendacao >= 0) return listaRecomendacao;
+	else return NULL;
+}
+
+//A função vai ser executada sempre que o usuário logar no sistema e verificar quais amigos ele não deveria ter
+//Em Breve
