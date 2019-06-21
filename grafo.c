@@ -122,7 +122,7 @@ void insereVertice(Grafo* g, Vertice* v, int* erro){
 
 int enviaPedido(Grafo* g, int idEnvia, int idRecebe){	
 	//aqui verificamos se o id pedido não é inválido, ou seja, não existe na rede	
-	if(idRecebe > g->nVertices) return 0;
+	if(idRecebe >= g->nVertices) return 0;
 	//aqui verificamos se a lista de pedidos de quem recebe está cheia
 	if(g->vertices[idRecebe]->tamPedidos == MAX_PEDIDOS){
 		printf("Infelizmente a lista de pedidos de amizade desta pessoa está cheia, tente novamente mais tarde...\n");
@@ -354,7 +354,7 @@ Vertice** similaridade(Grafo* g, int idUsuario){
 				amigo->afinidade = simi;
 				listaRecomendacao[nRecomendacao] = amigo;
 				if(amigo->afinidade < 0.8) printf("%d - %s - %lf\n",amigo->id, amigo->dados->nome, amigo->afinidade);
-				else if(amigo->afinidade >= 0.8) printf("Você e %d - %s - %lf parecem combinar\n",amigo->id, amigo->dados->nome, amigo->afinidade);
+				else if(amigo->afinidade >= 0.8) printf("Você e (%d) - %s - %.2lf parecem combinar\n",amigo->id, amigo->dados->nome, amigo->afinidade);
 			}
 		}
 	}

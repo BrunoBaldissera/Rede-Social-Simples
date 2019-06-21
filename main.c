@@ -6,10 +6,19 @@
 
 #include "grafo.h"
 
+void imprimeRede(Grafo *g){
+	for(int i = 0; i < g->nVertices; i++){
+		printf("id: %d, nome: %s\n", g->vertices[i]->id, g->vertices[i]->dados->nome);
+	}
+}
+
 int main(int argc, char* argv[]){
-	char nomeArquivo[100];	
+	char nomeArquivo[100];
+	printf("\nDigite o nome do arquivo que contem os dados dos usuarios\n");
 	scanf("%s", nomeArquivo);
-	fflush(stdin);	
+	fflush(stdin);
+	printf("\n");
+	
 	FILE* arquivoTexto = fopen(nomeArquivo, "r+");
 	if (arquivoTexto == NULL){
 		printf("O arquivo não existe.\n");
@@ -21,9 +30,7 @@ int main(int argc, char* argv[]){
 	if (DEBUG) printf("O tamanho do grafo criado é %d\n", g->nVertices);
 
 	printf("Imprimindo membros da rede!\n\n");
-	for(int i = 0; i < g->nVertices; i++){
-		printf("id: %d, nome: %s\n", g->vertices[i]->id, g->vertices[i]->dados->nome);
-	}
+	imprimeRede(g);
 
 	//loop de execução do programa
 	char login[200];
@@ -74,13 +81,14 @@ int main(int argc, char* argv[]){
 					similaridade(g, id);
 					break;
 				case 'a':
-					printf("Insira aqui o id da pessoa que você quer adicionar!\n");
+					imprimeRede(g);
+					printf("\nInsira aqui o id da pessoa que você quer adicionar!\n");
 					int idRecebe;
 					scanf("%d", &idRecebe);
 					
 					if(enviaPedido(g, id, idRecebe)) printf("Pedido enviado com sucesso!\n");
-					else printf("Ocorreu algum erro ao enviar o pedido, tente novamete\n");
-
+					else printf("Ocorreu algum erro ao enviar o pedido, tente novamente\n");
+					
 					break;
 				case 'p':
 					mostraPedidos(g, id);
