@@ -18,9 +18,9 @@ int main(int argc, char* argv[]){
 
 	int erro;
 	Grafo* g = constroiGrafo(arquivoTexto, &erro);
-	if (DEBUG) printf("o tamanho do grafo criado é %d\n", g->nVertices);
+	if (DEBUG) printf("O tamanho do grafo criado é %d\n", g->nVertices);
 
-	printf("Imprimindo membros da rede!\n");
+	printf("Imprimindo membros da rede!\n\n");
 	for(int i = 0; i < g->nVertices; i++){
 		printf("id: %d, nome: %s\n", g->vertices[i]->id, g->vertices[i]->dados->nome);
 	}
@@ -39,14 +39,15 @@ int main(int argc, char* argv[]){
 		printf("Agora insira seu id!\n");
 		scanf(" %d", &id);
 	
-		if(id > g->nVertices){
+		if(id >= g->nVertices){
 			printf("\nAparentemente você não possui um cadastro no Tinderbook ainda...\nGostaria de fazer um?\nDigite \"s\" se sim e \"n\" se não.\n");
 			scanf(" %c", &op);
 			
 			if(op == 'n') continue;
 			else {
 				criaCadastro(g, &erro);
-				printf("Parabéns, o seu id criado foi %d\nAgora você pode logar à rede com seu id e nome", g->nVertices);
+				system("clear");
+				printf("Parabéns, o seu id criado foi %d\nAgora você pode logar à rede com seu id e nome\n", g->nVertices - 1);
 			}
 			continue;
 		}
@@ -87,7 +88,7 @@ int main(int argc, char* argv[]){
 				case 's':					
 					break;
 				default:
-					printf("Opção inválida, tente novamente...");
+					printf("Opção inválida, tente novamente...\n");
 					break; 
 			}
 	

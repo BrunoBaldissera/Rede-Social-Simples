@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#define DEBUG 1
+#define DEBUG 0
 #define EXPANSAO 200
 #define MAX_PEDIDOS 50
 
