@@ -243,34 +243,34 @@ void mostraPedidos(Grafo* g, int id){
 void criaCadastro(Grafo* g, int* erro){
 	Dados* d = (Dados*) malloc(sizeof(Dados));
 	printf("Para criar sua conta precisaremos de alguns dados.\nInsira aqui seu nome\n");
-	scanf("%s", d->nome);
+	scanf(" %[^\n]", d->nome);
 
 	printf("Agora insira a sua idade\n");
 	scanf("%d", &(d->idade));
 	
 	printf("Agora insira a cidade onde você mora\n");
-	scanf(" %s", d->cidade);
+	scanf(" %[^\n]", d->cidade);
 
 	printf("Para qual time você torce\n");
-	scanf("%s", d->time);
+	scanf(" %[^\n]", d->time);
 
 	printf("Seu filme favorito\n");
-	scanf("%s", d->filme);
+	scanf(" %[^\n]", d->filme);
 
 	printf("Seu livro favorito\n");
-	scanf("%s", d->livro);
+	scanf(" %[^\n]", d->livro);
 	
 	printf("Qual seu prato preferido?\n");
-	scanf("%s", d->comida);
+	scanf(" %[^\n]", d->comida);
 
 	printf("Seu hobbie, ou o que você faz nas horas vagas, em poucas palavras\n");
-	scanf("%s", d->hobbie);
+	scanf(" %[^\n]", d->hobbie);
 
 	printf("Sua música\n");
-	scanf("%s", d->musica);
+	scanf(" %[^\n]", d->musica);
 
 	printf("Agora o que você faz, profissão ou estudos\n");
-	scanf("%s", d->atividade);
+	scanf(" %[^\n]", d->atividade);
 
 	Vertice* v = criaVertice(d);
 	insereVertice(g, v, erro);
