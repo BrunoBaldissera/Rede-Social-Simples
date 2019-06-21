@@ -3,6 +3,14 @@ Lucas Tuga,19,são carlos,matrix,são paulo,a revolução dos bichos,hamburguer,
 Bruno Baldissera,19,são carlos,blade runner,são paulo,a revolução dos bichos,hamburguer,música,black,estudante
 Anielle Tuga,22,são paulo,matrix,palmeiras,cidade de vidro,hamburguer,fotografia,to all of you,desempregada
 Carlos,21,são carlos,a bruxa,são paulo,homo sapiens,batata frita,culinária,animal,estudante
-Pedro,21,são paulo,doutor fantástico,framengo,a biblia,peixe,cervejas artesanais,senhor me guia,engenheiro UFF
-Pedro,21,são paulo,doutor fantástico,framengo,a biblia,peixe,cervejas artesanais,senhor me guia,engenheiro UFF
-
+Tim Maia,58,Ibaté,Auto da compadecida,Rio de Janeiro,universo em desencanto,frango empanado,especiarias,bom senso,musico
+Pietro Ioussep,54,moskova,encouracado potemkin,zenit,crime e castigo,strogonoff,tomar meios producao,moscow nights,revolucionario
+Fer Eiterer,13,sao pedro,leon the professional,palmeiras,o pequeno principe,macarrao,culinaria,animal,professor
+Motaveiga Mota,46,sao caetano,leon the professional,corinthians,lolita,bifao,musica,black,aluno
+Veigamota Veiga,33,sao leopoldo,leon the professional,corinthians,lolita,bifao,netflix and chill,moscow nights,servical auxiliar
+Senhor Einsbe,87,sao jorge,onde os fracos nao tem vez,são paulo,Biblia,bifinho,musica,senhor f,servical auxiliar
+Zeppelin,46,nova iorque,the song remains the same,la galaxy,biblia,hot dog,netflix and chill,the song remains the same,artif de carpinteiro
+Robehr Plan,22,nova hamburgo,cristiane f,la galaxy,corao,soja,fotografia,miss lexotan,artif de carpint
+Bonn Scott,76,capao redondo,toy story,palmeiras,o pequeno principe,molho agridoce,pintura,back to black,servical auxiliar
+Bloco dCodigo,11,javaburgo,java o filme,java fc,fundamentos de java,cafe,pintura,moscow nights,revolucionario
+Kruskal Prim,8,sao petesburgo,encouracado potemkin,dynamo,lolita,strogonoff,especiarias,moscow nights,professor
